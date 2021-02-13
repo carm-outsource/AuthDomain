@@ -59,7 +59,7 @@ public class AuthDomain extends Plugin implements Listener {
         InetSocketAddress address = event.getConnection().getVirtualHost();
         if (event.getConnection().isLegacy() || address == null) {
             event.getConnection().disconnect(kickMessage);
-            getLogger().info("BLOCKED CONNECTION: " + address);
+            getLogger().info("BLOCKED CONNECTION");
             return;
         }
         if (!whitelist.contains(address.getHostName())) {
