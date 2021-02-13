@@ -1,0 +1,4 @@
+name: AuthDomain
+main: me.ivanyf.authdomain.AuthDomain
+version: 1.0.0
+author: IvanYF
