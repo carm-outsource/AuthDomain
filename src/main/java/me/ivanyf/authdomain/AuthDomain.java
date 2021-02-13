@@ -2,6 +2,7 @@ package me.ivanyf.authdomain;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
+import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -11,6 +12,7 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.List;
 
 public class AuthDomain extends Plugin implements Listener {
@@ -50,6 +52,20 @@ public class AuthDomain extends Plugin implements Listener {
         if (!whitelist.contains(address)) {
             getLogger().info("BLOCKED CONNECTION: " + address);
             event.getConnection().disconnect(kickMessage);
+        }
+    }
+    @EventHandler
+    public void onPing(ProxyPingEvent event) {
+        InetSocketAddress address = event.getConnection().getVirtualHost();
+        if (event.getConnection().isLegacy() || address == null) {
+            event.getConnection().disconnect(kickMessage);
+            getLogger().info("BLOCKED CONNECTION: " + address);
+            return;
+        }
+        if (!whitelist.contains(address.getHostName())) {
+            event.getConnection().disconnect(kickMessage);
+            getLogger().info("BLOCKED CONNECTION: " + address);
+            return;
         }
     }
 }
