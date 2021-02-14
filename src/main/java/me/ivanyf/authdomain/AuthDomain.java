@@ -1,6 +1,8 @@
 package me.ivanyf.authdomain;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.connection.PendingConnection;
+import net.md_5.bungee.api.event.PlayerHandshakeEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -46,26 +48,13 @@ public class AuthDomain extends Plugin implements Listener {
     }
 
     @EventHandler
-    public void onPreLogin(PreLoginEvent event) {
+    public void onHandShake(PlayerHandshakeEvent event) {
         loadConfig();
-        String address = event.getConnection().getVirtualHost().getHostName();
+        String address = event.getHandshake().getHost();
+        PendingConnection connection = event.getConnection();
         if (!whitelist.contains(address)) {
             getLogger().info("BLOCKED CONNECTION: " + address);
-            event.getConnection().disconnect(kickMessage);
-        }
-    }
-    @EventHandler
-    public void onPing(ProxyPingEvent event) {
-        InetSocketAddress address = event.getConnection().getVirtualHost();
-        if (event.getConnection().isLegacy() || address == null) {
-            event.getConnection().disconnect(kickMessage);
-            getLogger().info("BLOCKED CONNECTION");
-            return;
-        }
-        if (!whitelist.contains(address.getHostName())) {
-            event.getConnection().disconnect(kickMessage);
-            getLogger().info("BLOCKED CONNECTION: " + address);
-            return;
+            connection.disconnect(kickMessage);
         }
     }
 }
