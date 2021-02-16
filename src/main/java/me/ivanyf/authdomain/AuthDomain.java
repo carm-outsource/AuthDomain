@@ -26,7 +26,7 @@ public class AuthDomain extends Plugin implements Listener {
 
     public void loadConfig() {
         if (!getDataFolder().exists()) getDataFolder().mkdir();
-        configFile = new File(getDataFolder(), "auth-domain.yml");
+        configFile = new File(getDataFolder(), "config.yml");
         try {
             if (!configFile.exists()) {
                 configFile.createNewFile();
