@@ -47,7 +47,7 @@ public class AuthDomain extends Plugin implements Listener {
 
     @EventHandler
     public void onHandShake(PlayerHandshakeEvent event) {
-        loadConfig();
+//        loadConfig();
         String address = event.getHandshake().getHost();
         PendingConnection connection = event.getConnection();
         if (!allowed(address)) {
